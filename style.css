@@ -1,0 +1,57 @@
+body {
+    margin: 0;
+    background: black;
+    overflow: hidden;
+    color: lime;
+    font-family: monospace;
+}
+
+#click-start {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: red;
+    font-size: 50px;
+    cursor: pointer;
+}
+
+#virus-screen {
+    display: none;
+}
+
+#alert-box {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background: red;
+    padding: 20px;
+    font-size: 30px;
+    color: white;
+    animation: flash 0.2s infinite alternate;
+}
+
+@keyframes flash {
+    from { background: red; }
+    to { background: yellow; }
+}
+
+#terminal {
+    padding: 20px;
+    white-space: pre-line;
+    font-size: 18px;
+}
+
+#windows-update {
+    display: none;
+    position: fixed;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: white;
+    font-size: 30px;
+}
