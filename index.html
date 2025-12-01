@@ -3,16 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <title>System Crash</title>
+
 <style>
     body {
+        margin: 0;
+        overflow: hidden;
         background: black;
         color: red;
-        font-family: Arial, sans-serif;
-        text-align: center;
-        overflow: hidden;
+        font-family: Consolas, monospace;
     }
 
     h1 {
+        text-align: center;
+        margin-top: 40px;
+        font-size: 40px;
         animation: blink 0.5s infinite alternate;
     }
 
@@ -29,6 +33,7 @@
         color: red;
         font-size: 18px;
         animation: shake 0.2s infinite;
+        z-index: 9999;
     }
 
     @keyframes shake {
@@ -38,13 +43,55 @@
         75% { transform: translate(3px, -1px); }
         100% { transform: translate(1px, -2px); }
     }
+
+    /* Matrix background */
+    canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+    }
+
+    /* Hidden BSOD screen */
+    #bsod {
+        display: none;
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: #0000AA;
+        color: white;
+        padding: 50px;
+        font-size: 22px;
+        z-index: 10000;
+        font-family: Consolas, monospace;
+    }
 </style>
 </head>
+
 <body>
+
+<canvas id="matrix"></canvas>
 
 <h1>⚠ SYSTEM ERROR: VIRUS DETECTED ⚠</h1>
 
+<div id="bsod">
+    <h1>:( Your PC ran into a problem</h1>
+    <p>Collecting error info... 100%</p>
+    <p>ERROR CODE: 0x0000DEAD</p>
+    <p>System will restart never :)</p>
+</div>
+
+<audio id="err" src="https://www.myinstants.com/media/sounds/windows-error-sound.mp3"></audio>
+
 <script>
+/* Vibrasiya */
+if (navigator.vibrate) {
+    setInterval(() => navigator.vibrate([200, 100, 200]), 2000);
+}
+
+/* Popup yağdırmaq */
 function randomPopup() {
     let div = document.createElement("div");
     div.className = "popup";
@@ -52,9 +99,55 @@ function randomPopup() {
     div.style.left = Math.random() * window.innerWidth + "px";
     div.style.top = Math.random() * window.innerHeight + "px";
     document.body.appendChild(div);
-}
 
-setInterval(randomPopup, 300);
+    document.getElementById("err").play();
+}
+setInterval(randomPopup, 350);
+
+/* Matrix effekti */
+let canvas = document.getElementById('matrix');
+let ctx = canvas.getContext('2d');
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let letters = "01ABCDEFGHIJKLMNOPQRSTUVXYZ@#$%&".split("");
+let fontSize = 14;
+let columns = canvas.width / fontSize;
+
+let drops = [];
+for (let i = 0; i < columns; i++)
+    drops[i] = 1;
+
+function drawMatrix() {
+    ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = "red";
+    ctx.font = fontSize + "px monospace";
+
+    for (let i = 0; i < drops.length; i++) {
+        let text = letters[Math.floor(Math.random() * letters.length)];
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.95)
+            drops[i] = 0;
+
+        drops[i]++;
+    }
+}
+setInterval(drawMatrix, 50);
+
+/* Bağlanmayan səhifə */
+window.onbeforeunload = function() {
+    return "Virus system lock!";
+};
+
+/* Bir neçə saniyədən sonra BSOD */
+setTimeout(() => {
+    document.getElementById("bsod").style.display = "block";
+}, 15000);
+
 </script>
 
 </body>
