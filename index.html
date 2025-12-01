@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>System Alert</title>
+  <style>
+    body {
+      background:black; 
+      color:#0f0; 
+      font-family:monospace; 
+      padding:20px; 
+      font-size:18px;
+    }
+    #final {
+      display:none;
+      text-align:center;
+      margin-top:50px;
+      font-size:28px;
+      color:white;
+    }
+  </style>
+</head>
+<body>
+  <div id="screen"></div>
+  <div id="final">😂 ZARAFAT IDI! 😂<br><br>Telefonuna heç nə olmadı 😉</div>
+
+  <script>
+    let lines = [
+      "[WARNING] System breach detected...",
+      "Injecting payload...",
+      "Accessing files...",
+      "Decrypting data...",
+      "ERROR: Malicious script running...",
+      "System unstable...",
+      "DEVICE INFECTED ❗",
+      "",
+      "Initiating auto-fix..."
+    ];
+
+    let index = 0;
+    let scr = document.getElementById("screen");
+
+    function showLine() {
+      if (index < lines.length) {
+        scr.innerHTML += lines[index] + "<br>";
+        index++;
+        setTimeout(showLine, 700);
+      } else {
+        setTimeout(() => {
+          scr.style.display = "none";
+          document.body.style.background = "#111";
+          document.getElementById("final").style.display = "block";
+        }, 1500);
+      }
+    }
+
+    showLine();
+  </script>
+</body>
+</html>
