@@ -44,7 +44,6 @@
         100% { transform: translate(1px, -2px); }
     }
 
-    /* Matrix background */
     canvas {
         position: fixed;
         top: 0;
@@ -54,7 +53,6 @@
         z-index: -1;
     }
 
-    /* Hidden BSOD screen */
     #bsod {
         display: none;
         position: fixed;
@@ -80,18 +78,21 @@
     <h1>:( Your PC ran into a problem</h1>
     <p>Collecting error info... 100%</p>
     <p>ERROR CODE: 0x0000DEAD</p>
-    <p>System will restart never :)</p>
 </div>
 
-<audio id="err" src="https://www.myinstants.com/media/sounds/windows-error-sound.mp3"></audio>
+<audio id="err" src="https://www.myinstants.com/media/sounds/error_1.mp3"></audio>
 
 <script>
-/* Vibrasiya */
-if (navigator.vibrate) {
-    setInterval(() => navigator.vibrate([200, 100, 200]), 2000);
-}
 
-/* Popup yağdırmaq */
+/* --- SƏSİ KİLİDİNİ AÇMAQ --- */
+let soundEnabled = false;
+
+document.body.addEventListener("click", () => {
+    document.getElementById("err").play();
+    soundEnabled = true;
+});
+
+/* --- POPUP --- */
 function randomPopup() {
     let div = document.createElement("div");
     div.className = "popup";
@@ -100,24 +101,24 @@ function randomPopup() {
     div.style.top = Math.random() * window.innerHeight + "px";
     document.body.appendChild(div);
 
-    document.getElementById("err").play();
+    if (soundEnabled) document.getElementById("err").play();
 }
-setInterval(randomPopup, 350);
 
-/* Matrix effekti */
+setInterval(randomPopup, 400);
+
+/* --- MATRIX --- */
 let canvas = document.getElementById('matrix');
 let ctx = canvas.getContext('2d');
 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-let letters = "01ABCDEFGHIJKLMNOPQRSTUVXYZ@#$%&".split("");
+let letters = "10101010101XZ@#%".split("");
 let fontSize = 14;
 let columns = canvas.width / fontSize;
-
 let drops = [];
-for (let i = 0; i < columns; i++)
-    drops[i] = 1;
+
+for (let i = 0; i < columns; i++) drops[i] = 1;
 
 function drawMatrix() {
     ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
@@ -138,15 +139,19 @@ function drawMatrix() {
 }
 setInterval(drawMatrix, 50);
 
-/* Bağlanmayan səhifə */
-window.onbeforeunload = function() {
-    return "Virus system lock!";
-};
-
-/* Bir neçə saniyədən sonra BSOD */
+/* --- BSOD (15 saniyədən sonra) --- */
 setTimeout(() => {
     document.getElementById("bsod").style.display = "block";
 }, 15000);
+
+/* --- BAĞLANMAYAN SƏHİFƏ --- */
+setInterval(() => {
+    history.pushState(null, null, location.href);
+}, 1000);
+
+window.onpopstate = () => {
+    history.pushState(null, null, location.href);
+};
 
 </script>
 
